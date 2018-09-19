@@ -1,0 +1,50 @@
+/*package whatever //do not write package name here */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFvsvG {
+    static int[] arr1;
+    static int[] arr2;
+    public static void main (String[] args) {
+        Scanner scrn=new Scanner(System.in);
+        int T=scrn.nextInt();
+        while(T-->0){
+            int n=scrn.nextInt();
+            int m=scrn.nextInt();
+            arr1=new int[n];
+            arr2=new int[m];
+            for(int i=0;i<n;i++)
+                arr1[i]=scrn.nextInt();
+            for(int i=0;i<m;i++)
+                arr2[i]=scrn.nextInt();
+          long[][] dp=new long[n+1][m+1];
+          long[][] val=new long[n+1][m+1];
+          for(int i=1;i<=n;i++){
+              for(int j=1;j<=m;j++){
+                  int je=j-1;
+                  int ie=i-1;
+                  long jval;
+                  if(je>=m){
+                      jval=0;
+                  }else{
+                      jval=arr2[je];
+                  }
+                  long item=arr1[ie]*jval;
+                  val[i][j]=item;
+              }
+          }
+         for(int j=1;j<=m;j++){
+             for(int i=j;i<=n;i++){
+                 dp[i][j]=Math.max(dp[i-1][j-1]+val[i][j],dp[i-1][j]);
+             }
+         }
+          
+            System.out.println(dp[n][m]);
+
+
+        }
+    }
+  
+}
