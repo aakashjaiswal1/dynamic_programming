@@ -1,0 +1,53 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/0-1-knapsack-problem/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+    static int N;
+    static int W;
+    static int[] value;
+    static int[] weight;
+	public static void main (String[] args) {
+		Scanner scrn=new Scanner(System.in);
+		int T=scrn.nextInt();
+		while(T-->0){
+		    N=scrn.nextInt();
+		     W=scrn.nextInt();
+		     value=new int[N+1];
+		     weight=new int[N+1];
+		    for(int i=0;i<N;i++){
+		        value[i+1]=scrn.nextInt();
+		    }
+		    for(int i=0;i<N;i++){
+		        weight[i+1]=scrn.nextInt();
+		    }
+		   int[][] dp=new int[N+1][W+1];
+		   for(int pos=1;pos<=N;pos++){
+		       for(int wt=1;wt<=W;wt++){
+		           int val=value[pos];
+		           int weight_of_item=weight[pos];
+		                 int ret1=0;
+		                 if(wt>=weight_of_item){
+		                     ret1=val+dp[pos-1][wt-weight_of_item];
+		                 }
+		                 dp[pos][wt]=Math.max(ret1,dp[pos-1][wt]);
+		       }
+		   }
+		   System.out.println(dp[N][W]);
+		    
+		}
+	}
+	static long solve(int pos,int filled,long[][] dp){
+	    if(pos>=N)return 0;
+	    if(dp[pos][filled]!=-1)return dp[pos][filled]; 
+	    int rem=W-filled;
+	    long ret1=0;
+	    if(rem>=weight[pos]){
+	        ret1=(long)(solve(pos+1,filled+weight[pos],dp)+value[pos]);
+	    }
+	    long ret2=(long)solve(pos+1,filled,dp);
+	    return dp[pos][filled]=Math.max(ret1,ret2);
+	}
+}
