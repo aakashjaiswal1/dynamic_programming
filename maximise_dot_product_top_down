@@ -1,0 +1,57 @@
+//https://practice.geeksforgeeks.org/problems/maximize-dot-product/0/?track=Placement
+/*package whatever //do not write package name here */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFvsvG {
+    static int[] arr1;
+    static int[] arr2;
+    public static void main (String[] args) {
+        Scanner scrn=new Scanner(System.in);
+        int T=scrn.nextInt();
+        while(T-->0){
+            int n=scrn.nextInt();
+            int m=scrn.nextInt();
+            arr1=new int[n];
+            arr2=new int[m];
+            for(int i=0;i<n;i++)
+                arr1[i]=scrn.nextInt();
+            for(int i=0;i<m;i++)
+                arr2[i]=scrn.nextInt();
+            long[][][] dp=new long[arr1.length+5][arr1.length+5][n-m+1+5];
+            for(int i=0;i<arr1.length+5;i++){
+                for(int j=0;j<arr1.length+5;j++){
+                    for(int k=0;k<(n-m+1+5);k++){
+                        dp[i][j][k]=-1;
+                    }
+                }
+            }
+            long ans=    solver(0,0,n-m,dp);
+            System.out.println(ans);
+
+
+        }
+    }
+    static long solver(int i,int j,int skip,long[][][] dp){
+        if(i>=arr1.length||j>=arr1.length){
+            return 0;
+        }
+       // System.out.println(i+" "+j+" "+skip);
+        if(dp[i][j][skip]!=-1)return dp[i][j][skip];
+        long jval;
+        if(j>=arr2.length){
+            jval=0;
+        }else{
+            jval=arr2[j];
+        }
+        long ret1=solver(i+1,j+1,skip,dp)+arr1[i]*jval;
+        long ret2=(long)0;
+        if(skip>0){
+            ret2=solver(i+1,j,skip-1,dp);
+        }
+        dp[i][j][skip]=Math.max(ret1,ret2);
+        return dp[i][j][skip];
+    }
+}
