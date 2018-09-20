@@ -1,0 +1,63 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFsxG {
+    static int[] arr;
+    static int N;
+    static long[] dp;
+    public static void main (String[] args) {
+        Scanner scrn=new Scanner(System.in);
+        int T=scrn.nextInt();
+        while(T-->0){
+            N=scrn.nextInt();
+            arr=new int[N];
+            dp=new long[N];
+
+            for(int i=0;i<N;i++){
+                arr[i]=scrn.nextInt();
+            }
+            dp[N-1]=0;
+            for(int i=N-2;i>=0;i--){
+                int fuel=arr[i];
+                if(fuel==0){
+                    dp[i]=(long)Integer.MAX_VALUE;
+                }else {
+                    if(fuel+i>=N-1){
+                        dp[i]=1;
+                    }
+                    else{
+                    long min = Integer.MAX_VALUE;
+                    for (int k = i + 1; k <= i + fuel; k++) {
+                        if (k >= N - 1) break;
+                        long vv = dp[k] + 1;
+                        if (vv <= Integer.MAX_VALUE) {
+                            min = Math.min(vv, min);
+                        }
+
+                    }
+                    dp[i] = min;
+                }
+                }
+            }
+            if(dp[0]>=2147483647){
+                dp[0]=-1;
+            }
+            System.out.println(dp[0]);
+        }
+
+    }
+    static long steps(int pos){
+        if(pos>=N-1)return 0;
+        if(dp[pos]!=-1)return dp[pos];
+        int fuel=arr[pos];
+        long min=Integer.MAX_VALUE;
+        for(int i=1;i<=fuel;i++){
+            min=Math.min(steps(pos+i),min);
+        }
+        dp[pos]=min+1;
+        return(min+1);
+    }
+}
