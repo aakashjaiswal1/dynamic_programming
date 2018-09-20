@@ -1,0 +1,41 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/minimum-sum-partition/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+    static int N;
+    static int[] arr;
+    static long ts;
+    static long[][] dp;
+	public static void main (String[] args) {
+		Scanner scrn=new Scanner(System.in);
+		int T=scrn.nextInt();
+		while(T-->0){
+		    N=scrn.nextInt();
+		    arr=new int[N];
+		    ts=0;
+		    for(int i=0;i<N;i++){
+		        arr[i]=scrn.nextInt();
+		        ts+=arr[i];
+		    }
+		    dp=new long[(int)N+1][(int)ts+1];
+		    for(long[] arr:dp){
+		        Arrays.fill(arr,-1);
+		    }
+		    System.out.println(diff(0,0));
+		    
+		}
+	}
+	static long diff(int pos,long sum){
+	    if(pos==N){
+	        return Math.abs(sum-(ts-sum));
+	    }
+	    if(dp[(int)pos][(int)sum]!=-1)return dp[(int)pos][(int)sum];
+	    long ret1=diff(pos+1,sum+arr[pos]);
+	    long ret2=diff(pos+1,sum);
+	     dp[(int)pos][(int)sum]=(long)Math.min(ret1,ret2);
+	     return dp[(int)pos][(int)sum];
+	}
+}
