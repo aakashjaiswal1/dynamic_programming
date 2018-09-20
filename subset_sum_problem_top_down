@@ -1,0 +1,57 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/subset-sum-problem/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+    static int N;
+    static int[] arr;
+  static  Boolean[][] dp;
+    
+	public static void main (String[] args) {
+		Scanner scrn=new Scanner(System.in);
+		int T=scrn.nextInt();
+	ttyl:	while(T-->0){
+		    N=scrn.nextInt();
+		    arr=new int[N];
+		    int sum=0;
+		    for(int i=0;i<N;i++){
+		        arr[i]=scrn.nextInt();
+		        sum+=arr[i];
+		    }
+		    if(sum%2!=0){
+		        System.out.println("NO");
+		        continue ttyl;
+		    }
+		    sum/=2;
+		     dp=new Boolean[N+1][sum+1];
+		    boolean bl=solve(0,sum);
+		    if(bl){
+		         System.out.println("YES");
+		    }else{
+		         System.out.println("NO");
+		    }
+		    
+		}
+	}
+	static  boolean solve(int pos,int sum){
+	    if(sum==0)return true;
+	    if(pos>=N)return false;
+	    if(dp[pos][sum]!=null)return dp[pos][sum];
+	    int val=arr[pos];
+	    boolean ret1=false;
+	    if(val<=sum){
+	        ret1=solve(pos+1,sum-val);
+	    }
+	    boolean ret2=solve(pos+1,sum);
+	    
+	    if(ret1||ret2){
+	        dp[pos][sum]=true;
+	        return true;
+	    }
+	    dp[pos][sum]=false;
+	    return false;
+	}
+	
+}
