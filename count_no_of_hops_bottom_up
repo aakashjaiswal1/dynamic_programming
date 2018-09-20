@@ -1,0 +1,25 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/count-number-of-hops/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFGc {
+    public static void main (String[] args) {
+        Scanner scrn=new Scanner(System.in);
+        int T=scrn.nextInt();
+        while(T-->0){
+            int no=scrn.nextInt();
+            int  no1=Math.max(no,5);
+            long[] arr=new long[no1+5];
+            arr[0]=0;
+            arr[1]=1;
+            arr[2]=2;
+            arr[3]=4;
+            for(int i=4;i<=no;i++){
+                arr[i]=arr[i-1]+arr[i-2]+arr[i-3];
+            }
+            System.out.println(arr[no]);
+        }
+    }
+}
