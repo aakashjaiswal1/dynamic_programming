@@ -1,0 +1,46 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/subarray-with-given-sum/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFGed {
+    public static void main (String[] args) {
+        Scanner scrn=new Scanner(System.in);
+        int T=scrn.nextInt();
+        while(T-->0){
+            int l=-1;
+            int r=-1;
+            int n=scrn.nextInt();
+            int S=scrn.nextInt();
+            int[] arr=new int[n];
+            for(int i=0;i<n;i++){
+                arr[i]=scrn.nextInt();
+            }
+
+            int sum=0;
+            HashMap<Integer,Integer> hm=new HashMap<>();
+            for(int i=0;i<n;i++){
+                int ele=arr[i];
+                sum+=ele;
+                if(sum==S){
+                    l=0;
+                    r=i;
+                    break;
+                }
+                int search=sum-S;
+                if(hm.containsKey(search)){
+                    l=hm.get(search)+1;
+                    r=i;
+                    break;
+                }
+                hm.put(sum,i);
+            }
+            if(l==-1){
+                System.out.println(-1);
+            }else{
+                System.out.println((l+1)+" "+(r+1));
+            }
+        }
+    }
+}
