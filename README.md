@@ -1,2 +1,2 @@
 # dynamic_programming
-hey i will upload dp codes hare .
+hey i will upload dp codes here .
