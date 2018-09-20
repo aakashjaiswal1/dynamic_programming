@@ -1,0 +1,41 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+    static int[] arr;
+    static int N;
+    static long[] dp;
+	public static void main (String[] args) {
+		Scanner scrn=new Scanner(System.in);
+		int T=scrn.nextInt();
+		while(T-->0){
+		     N=scrn.nextInt();
+		    arr=new int[N];
+		    dp=new long[N];
+		    Arrays.fill(dp,-1);
+		    for(int i=0;i<N;i++){
+		        arr[i]=scrn.nextInt();
+		    }
+		    long ans=steps(0);
+		   if(ans==2147483648L){
+		       ans=-1;
+		   } 
+		    System.out.println(ans);
+		}
+		
+	}
+	static long steps(int pos){
+	    if(pos>=N-1)return 0;
+	    if(dp[pos]!=-1)return dp[pos];
+	    int fuel=arr[pos];
+	    long min=Integer.MAX_VALUE;
+	    for(int i=1;i<=fuel;i++){
+	        min=Math.min(steps(pos+i),min);
+	    }
+	    dp[pos]=min+1;
+	    return(min+1);
+	}
+}
