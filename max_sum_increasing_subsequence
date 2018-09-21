@@ -1,0 +1,33 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/maximum-sum-increasing-subsequence/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+	public static void main (String[] args) {
+		Scanner scrn=new Scanner(System.in);
+		int T=scrn.nextInt();
+		while(T-->0){
+		    int N=scrn.nextInt();
+		    int[] arr=new int[N];
+		    long[] dp=new long[N];
+		    for(int i=0;i<N;i++){
+		        arr[i]=scrn.nextInt();
+		        dp[i]=arr[i];
+		    }
+		    long ans=Integer.MIN_VALUE;
+		    for(int i=0;i<N;i++){
+		        for(int j=i+1;j<N;j++){
+		            if(arr[j]>arr[i]){
+		                dp[j]=Math.max(dp[j],arr[j]+dp[i]);
+		            }
+		            ans=Math.max(ans,Math.max(dp[i],dp[j]));
+		        }
+		        
+		    }
+		     ans=Math.max(ans,arr[0]);
+		    System.out.println(ans);
+		}
+	}
+}
