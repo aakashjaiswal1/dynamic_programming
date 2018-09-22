@@ -1,0 +1,40 @@
+/*package whatever //do not write package name here */
+//  https://practice.geeksforgeeks.org/problems/gold-mine-problem/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+    static int[][] arr;
+    static long[][] dp;
+	public static void main (String[] args) {
+		Scanner scrn=new Scanner(System.in);
+		int T=scrn.nextInt();
+		while(T-->0){
+		    int n=scrn.nextInt();
+		    int m=scrn.nextInt();
+		    arr=new int[n][m];
+		    dp=new long[n+1][m+1];
+		    for(long[] a:dp){
+		        Arrays.fill(a,-1);
+		    }
+		    for(int i=0;i<n;i++){
+		        for(int j=0;j<m;j++){
+		            arr[i][j]=scrn.nextInt();
+		        }
+		    }
+		    long max=0;
+		    for(int i=0;i<n;i++){
+		        max=Math.max(max,solve(i,0));
+		    }
+		    System.out.println(max);
+		}
+	}
+	static long solve(int i,int j){
+	    if(i<0||i>=arr.length||j<0||j>=arr[0].length)return 0;
+	    if(dp[i][j]!=-1)return dp[i][j];
+	    long ans=arr[i][j];
+	    ans+=Math.max(solve(i-1,j+1),Math.max(solve(i,j+1),solve(i+1,j+1)));
+	    return dp[i][j]=ans;
+	}
+}
