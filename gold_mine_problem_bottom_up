@@ -1,0 +1,65 @@
+/*package whatever //do not write package name here */
+https://practice.geeksforgeeks.org/problems/gold-mine-problem/0/?ref=self
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFGuh {
+    static int[][] arr;
+    static long[][] dp;
+    static int n;
+    static int m;
+    public static void main (String[] args) {
+        Scanner scrn=new Scanner(System.in);
+        int T=scrn.nextInt();
+        while(T-->0){
+            n=scrn.nextInt();
+            m=scrn.nextInt();
+            arr=new int[n][m];
+            dp=new long[n+1][m+1];
+            for(long[] a:dp){
+                Arrays.fill(a,0);
+            }
+            for(int i=0;i<n;i++){
+                for(int j=0;j<m;j++){
+                    arr[i][j]=scrn.nextInt();
+                }
+            }
+            long max=0;
+            for(int j=0;j<m;j++){
+                for(int i=0;i<n;i++){
+                    dp[i][j]=arr[i][j];
+                    long ret=0;
+                    if(check(i-1,j-1)){
+                        long cc=dp[i-1][j-1];
+                        ret=Math.max(ret,cc);
+                    }
+                    if(check(i,j-1)){
+                        long cc=dp[i][j-1];
+                        ret=Math.max(ret,cc);
+                    }
+                    if(check(i+1,j-1)){
+                        long cc=dp[i+1][j-1];
+                        ret=Math.max(ret,cc);
+                    }
+                    dp[i][j]+=ret;
+
+                }
+            }
+            for(int i=0;i<n;i++){
+                max=Math.max(max,dp[i][m-1]);
+            }
+            System.out.println(max);
+        }
+    }
+    static boolean check(int i,int j){
+        if(i>=n||i<0||j>=m||j<0)return false;return true;
+    }
+    static long solve(int i,int j){
+        if(i<0||i>=arr.length||j<0||j>=arr[0].length)return 0;
+        if(dp[i][j]!=-1)return dp[i][j];
+        long ans=arr[i][j];
+        ans+=Math.max(solve(i-1,j+1),Math.max(solve(i,j+1),solve(i+1,j+1)));
+        return dp[i][j]=ans;
+    }
+}
