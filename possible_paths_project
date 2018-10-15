@@ -1,0 +1,436 @@
+/*
+This is part of DAA project submited by team AAKASH JAISWAL and ANJALI MOHINI.
+A robot is asked to navigate a maze. It is placed at a certain position (the starting position) in the maze and is asked 
+to try to reach another position (the goal position). 
+Positions in the maze will either be open or blocked with an obstacle. Positions are identified by (x,y) coordinates. 
+
+At any given moment, the robot can only move 1 step in one of 4 directions. Valid moves are: 
+    • Go North: (x,y) -> (x,y-1) 
+    • Go East: (x,y) -> (x+1,y) 
+    • Go South: (x,y) -> (x,y+1) 
+    • Go West: (x,y) -> (x-1,y) 
+Note that positions are specified in zero-based coordinates (i.e., 0...size-1, where size is the size of the maze in the 
+corresponding dimension). 
+The robot can only move to positions without obstacles and must stay within the maze. 
+The robot should search for a path from the starting position to the goal position (a solution path) until it finds one or until
+it exhausts all possibilities. In addition, it should mark the path it finds (if any) in the maze. 
+
+
+
+/*
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+class project {
+    // static long nCr[][] = new long[5005][5005];
+    public static void main(String[] args) {
+        in = new FastReader();
+        System.out.println("Enter the dimensions of matrix");
+        N=ni();
+        M=ni();
+        isFeasible=new boolean[N][M];
+        System.out.println("Now fill n*m spaced integers 0 denote an obstacle and 1 is clear path");
+        for (int i=0;i<N;i++){
+            for (int j=0;j<M;j++){
+                int ele=ni();
+                if (ele==1)isFeasible[i][j]=true;
+            }
+        }
+        System.out.println("enter starting  index 0 based index");
+        a=ni();
+        b=ni();
+        System.out.println("enter ending  index 0 based index");
+        x=ni();
+        y=ni();
+         visited=new boolean[N][M];
+         ArrayList<node> al=dfs(a,b);
+         if (al==null){
+             System.out.println("no path exist");
+         }else{
+             System.out.println("one of possible path is");
+             for (int i=0;i<al.size();i++){
+                 System.out.println(al.get(i));
+             }
+         }
+    }
+    static ArrayList<node> dfs(int i,int j){
+        if(i<0||j<0||i>=N||j>=M||visited[i][j]||(!isFeasible[i][j]))return null;
+        if (i==x&&j==y)return new ArrayList<>();
+        visited[i][j]=true;
+        ArrayList<node> ret=dfs(i+1,j);
+        if (ret!=null){
+            ArrayList<node> copy=new ArrayList<>(ret);
+            copy.add(0,new node(i,j));
+            return copy;
+        }
+
+        ret=dfs(i-1,j);
+        if (ret!=null){
+            ArrayList<node> copy=new ArrayList<>(ret);
+            copy.add(0,new node(i,j));
+            return copy;
+        }
+
+        ret=dfs(i,j+1);
+        if (ret!=null){
+            ArrayList<node> copy=new ArrayList<>(ret);
+            copy.add(0,new node(i,j));
+            return copy;
+        }
+
+        ret=dfs(i,j-1);
+        if (ret!=null){
+            ArrayList<node> copy=new ArrayList<>(ret);
+            copy.add(0,new node(i,j));
+            return copy;
+        }
+        return null;
+    }
+    static class node{
+        int x;
+        int y;
+        node(int x,int y){
+        this.x=x;
+        this.y=y;
+        }
+        @Override
+        public String toString(){
+            String str="x->"+" "+x+"y-> "+y;
+            return str;
+        }
+
+
+    }
+
+    static int N;
+    static int M;
+    static int a;
+    static int b;
+    static int x;
+    static int y;
+    static boolean[][] visited;
+    static boolean[][] isFeasible;
+
+    public static long binarySearch(long low, long high) {
+        while (high - low > 1) {
+            long mid = (high - low)/2 + low;
+            //System.out.println(mid);
+            if (works(mid)) {
+                high = mid;
+            } else {
+                low = mid;
+            }
+        }
+        return (works(low) ? low : high);
+    }
+    private static String toString(List<Integer> list) {
+        StringBuilder result = new StringBuilder();
+        for(int x : list) {
+            result.append(x + " ");
+        }
+        return result.toString();
+    }
+    //     static long ncr(int n,int r)
+//     {
+//         if(n<0 || r<0 || n<r)
+//             return 0;
+//         return nCr[n][r];
+//     }
+    public static void sortbyColumn(int arr[][], int col)
+    {
+        //this method is taken from geeks for geeks
+        // Using built-in sort function Arrays.sort
+        Arrays.sort(arr, new Comparator<int[]>() {
+
+            @Override
+            // Compare values according to columns
+            public int compare(final int[] entry1,
+                               final int[] entry2) {
+
+                // To sort in descending order revert
+                // the '>' Operator
+                if (entry1[col] > entry2[col])
+                    return 1;
+                else
+                    return -1;
+            }
+        });  // End of function call sort().
+    }
+
+    private static Set<Integer> getPrime(int value) {
+
+        Set<Integer> set = new HashSet<>();
+        for (int i = 2;i * i <= value;i ++) {
+            if (value % i == 0) {
+                while (value % i == 0) {
+                    value /= i;
+                }
+                set.add(i);
+            }
+        }
+        if (value > 1) {
+            set.add(value);
+        }
+        return set;
+
+    }
+    static class Graph{
+        ArrayList<Integer> al_array[];
+        int nodes;
+        Graph(int no){
+            this.nodes=no;
+            this.al_array=new ArrayList[no];
+            for (int i=0;i<no;i++){
+                al_array[i]=new ArrayList<>();
+            }
+        }
+        void addDir(int i,int j){
+            this.al_array[i].add(j);
+        }
+        void addUndir(int i,int j){
+            this.al_array[i].add(j);
+            this.al_array[j].add(i);
+        }
+        Graph compliment(){
+            Graph com=new Graph(this.nodes);
+            for (int i=0;i<this.nodes;i++){
+                ArrayList<Integer> al=this.al_array[i];
+                for (int j=0;j<al.size();j++){
+                    int node=al.get(j);
+                    com.addDir(node,i);
+                }
+            }
+            return com;
+        }
+
+    }
+    static void  printLN2DArray(int[][] arr){
+        StringBuilder sb=new StringBuilder();
+        for (int i=0;i<arr.length;i++){
+            for (int j=0;j<arr[i].length;j++){
+                sb.append(arr[i][j]).append(" ");
+            }
+            sb.append("\n");
+        }
+        System.out.println(sb.toString());
+    }
+    static long fast_exp_with_mod(long base, long exp) {
+        long MOD=1000000000+7;
+        long res=1;
+        while(exp>0) {
+            if(exp%2==1) res=(res*base)%MOD;
+            base=(base*base)%MOD;
+            exp/=2;
+        }
+        return res%MOD;
+    }
+    public static long gcd(long a, long b)
+    {
+        if (a == 0)
+            return b;
+        return gcd(b%a, a);
+    }
+    static class my_no{
+        long num;
+        long denom;
+
+        @Override
+        public String toString() {
+            if (denom<0){
+                this.num=-this.num;
+                this.denom=-this.denom;
+            }
+            if (num==0)return "0";
+            return (num+"/"+denom);
+        }
+
+        my_no(int no){
+            this.num=no;
+            this.denom=1;
+        }
+        my_no(long num,long denom){
+            this.num=num;
+            this.denom=denom;
+        }
+
+        my_no multiply(my_no obj){
+            long num1=obj.num;
+            long denom1=obj.denom;
+            long n=num1*num;
+            long d=denom1*denom;
+            long gcd=gcd(n,d);
+            n/=gcd;
+            d/=gcd;
+            return new my_no(n,d);
+
+        }
+//        my_no multiply(my_no obj){
+//            long num1=obj.num;
+//            long denom1=obj.denom;
+//            long num2=this.num;
+//            long denom2=this.denom;
+//
+//        }
+
+        my_no multiply(int no){
+            long n=num*no;
+            long d=denom;
+            long gcd=gcd(n,d);
+            n/=gcd;
+            d/=gcd;
+            return new my_no(n,d);
+
+        }
+    }
+    static void memset(int[][] arr,int val){
+        for (int i=0;i<arr.length;i++){
+            for (int j=0;j<arr[i].length;j++){
+                arr[i][j]=val;
+            }
+        }
+    }
+    static void memset(int[] arr,int val){
+        for (int i=0;i<arr.length;i++){
+            arr[i]=val;
+        }
+    }
+
+
+    static void memset(long[][] arr,long val){
+        for (int i=0;i<arr.length;i++){
+            for (int j=0;j<arr[i].length;j++){
+                arr[i][j]=val;
+            }
+        }
+    }
+    static void memset(long[] arr,long val){
+        for (int i=0;i<arr.length;i++){
+            arr[i]=val;
+        }
+    }
+    static private boolean works(long test){
+        return true;
+    }
+
+
+    static void reverse(char[] arr ,int i,int j){
+        if (i==j)
+            return;
+        while (i<j){
+            char temp=arr[i];
+            arr[i]=arr[j];
+            arr[j]=temp;
+            ++i;
+            --j;
+        }
+    }
+    static int[]  takeIntegerArrayInput(int no){
+        int[] arr=new int[no];
+        for (int i=0;i<no;++i){
+            arr[i]=ni();
+        }
+        return arr;
+    }
+    static long fast_Multiply(long no , long pow){
+        long result=1;
+        while (pow>0){
+            if ((pow&1)==1){
+                result=result*no;
+            }
+            no=no*no;
+            pow>>=1;
+        }
+        return result;
+    }
+
+    static long[]  takeLongArrayInput(int no){
+        long[] arr=new long[no];
+        for (int i=0;i<no;++i){
+            arr[i]=ni();
+        }
+        return arr;
+    }
+    static final long MOD = (long)1e9+7;
+    static FastReader in;
+
+
+    static void p(Object o){
+        System.out.print(o);
+    }
+
+    static void pn(Object o){
+        System.out.println(o);
+    }
+
+    static String n(){
+        return in.next();
+    }
+
+    static String nln(){
+        return in.nextLine();
+    }
+
+    static int ni(){
+        return Integer.parseInt(in.next());
+    }
+
+    static int[] ia(int N){
+        int[] a = new int[N];
+        for(int i = 0; i<N; i++)a[i] = ni();
+        return a;
+    }
+
+    static long[] la(int N){
+        long[] a = new long[N];
+        for(int i = 0; i<N; i++)a[i] = nl();
+        return a;
+    }
+
+    static long nl(){
+        return Long.parseLong(in.next());
+    }
+
+    static double nd(){
+        return Double.parseDouble(in.next());
+    }
+
+    static class FastReader{
+        BufferedReader br;
+        StringTokenizer st;
+        public FastReader(){
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
+
+        String next(){
+            while (st == null || !st.hasMoreElements()){
+                try{
+                    st = new StringTokenizer(br.readLine());
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        String nextLine(){
+            String str = "";
+            try{
+                str = br.readLine();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            return str;
+        }
+    }
+    static void println(String[] arr){
+        for (int i=0;i<arr.length;++i){
+            System.out.println(arr[i]);
+        }
+    }
+
+}
+
