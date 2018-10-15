@@ -59,7 +59,11 @@ class project {
     }
     static ArrayList<node> dfs(int i,int j){
         if(i<0||j<0||i>=N||j>=M||visited[i][j]||(!isFeasible[i][j]))return null;
-        if (i==x&&j==y)return new ArrayList<>();
+        if (i==x&&j==y){
+            ArrayList<node> al=new ArrayList<>();
+            al.add(new node(x,y));
+            return al;
+        }
         visited[i][j]=true;
         ArrayList<node> ret=dfs(i+1,j);
         if (ret!=null){
